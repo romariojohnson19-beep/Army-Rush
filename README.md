@@ -268,8 +268,6 @@ The game structure supports easy audio integration:
 
 ## 📄 License
 
-Open source - feel free to modify and distribute!
-
 ---
 
 **Ready for your pixel art sprites!** 🎨 The game engine is fully functional and optimized for 2D sprite integration.
