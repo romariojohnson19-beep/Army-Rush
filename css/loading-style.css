@@ -1,0 +1,242 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: white;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a3e, #0a0a2a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-screen {
+    text-align: center;
+    z-index: 10;
+    position: relative;
+}
+
+/* Game Logo */
+.game-logo {
+    margin-bottom: 80px;
+}
+
+.main-title {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #00ff41;
+    text-shadow: 
+        0 0 20px #00ff41,
+        0 0 40px #00ff41,
+        0 0 80px #00ff41;
+    margin-bottom: 20px;
+    letter-spacing: 12px;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #cccccc;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+}
+
+/* Loading Animation */
+.loading-animation {
+    margin-bottom: 60px;
+}
+
+.loading-bar-container {
+    width: 400px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #00ff41;
+    border-radius: 8px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.loading-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff41, #00cc33, #00ff41);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+.loading-text {
+    font-size: 1.1rem;
+    color: #00ff41;
+    margin-bottom: 10px;
+    animation: textFlicker 2s ease-in-out infinite;
+}
+
+.loading-percentage {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 10px #00ff41;
+}
+
+/* Version Info */
+.version-info {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: #666666;
+    text-align: center;
+}
+
+.version-info div {
+    margin: 5px 0;
+}
+
+/* Skip Button */
+.skip-button {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg, #00ff41, #00cc33);
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+.skip-button:hover {
+    background: linear-gradient(45deg, #00cc33, #00ff41);
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Background Stars */
+.stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: starTwinkle 3s ease-in-out infinite;
+}
+
+.star.small {
+    width: 1px;
+    height: 1px;
+}
+
+.star.medium {
+    width: 2px;
+    height: 2px;
+}
+
+.star.large {
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+@keyframes titleGlow {
+    0% {
+        text-shadow: 
+            0 0 20px #00ff41,
+            0 0 40px #00ff41,
+            0 0 80px #00ff41;
+    }
+    100% {
+        text-shadow: 
+            0 0 30px #00ff41,
+            0 0 60px #00ff41,
+            0 0 120px #00ff41;
+    }
+}
+
+@keyframes loadingPulse {
+    0%, 100% {
+        box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.3);
+    }
+    50% {
+        box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.8);
+    }
+}
+
+@keyframes textFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
+    }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 3rem;
+        letter-spacing: 6px;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+    
+    .loading-bar-container {
+        width: 300px;
+    }
+}

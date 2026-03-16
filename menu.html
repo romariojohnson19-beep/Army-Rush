@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Conquest - Command Center</title>
+    <!-- Preload critical hero assets for faster paint -->
+    <link rel="preload" href="assets/sprites/menu/Menu ui.png" as="image">
+    <link rel="preload" href="assets/sprites/menu/Docked_jet.png" as="image">
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+    <script src="js/resource-sprite-renderer.js" defer></script>
+</head>
+<body class="theme-dark-neon">
+    <div class="starmap-parallax" aria-hidden="true">
+        <span class="parallax-layer layer-grid"></span>
+        <span class="parallax-layer layer-stars"></span>
+        <span class="parallax-layer layer-pings"></span>
+    </div>
+
+    <!-- Vortex background canvas (animated from Menu ui.png) -->
+    <canvas id="vortexCanvas" aria-hidden="true"></canvas>
+
+    <div class="menu-container">
+        <!-- Contained GUI window for compact mobile layout -->
+        <div class="gui-window">
+            <!-- Title bar / bezel -->
+            <div class="gui-titlebar" role="banner" aria-label="Command Center">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <img src="assets/sprites/menu/menu-icon.svg" alt="Command" class="gui-icon" onerror="this.style.display='none'" />
+                    <div class="gui-title">Command Center</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="live-indicator" aria-hidden="false">
+                        <span class="live-dot" aria-hidden="true"></span>
+                        <span class="live-label">LIVE</span>
+                    </div>
+                    <button id="muteToggle" class="mute-toggle" aria-pressed="false" title="Toggle sound" aria-label="Toggle sound">
+                        🔊
+                    </button>
+                        <button id="contrastToggle" class="contrast-toggle" aria-pressed="false" title="High contrast" aria-label="Toggle high contrast">
+                            🌓
+                        </button>
+                </div>
+            </div>
+            <!-- Hero foreground: Docked jet (launch) and hovering side buttons -->
+            <div class="hero-foreground" role="presentation">
+            <div class="hero-buttons left">
+                <button class="cp-btn hero-btn" id="upgradesBtn_hero" data-fullpage="true" onclick="window.location.href='upgrades.html'">
+                    <img class="menu-icon" src="assets/sprites/menu/upgrades.png" alt="Upgrades">
+                    <span>Upgrades</span>
+                </button>
+                <button class="cp-btn hero-btn" id="charactersBtn_hero">
+                    <img class="menu-icon" src="assets/sprites/menu/pilot.png" alt="Pilots">
+                    <span>Pilot Roster</span>
+                </button>
+                <button class="cp-btn hero-btn" id="hangarBtn_hero" data-fullpage="true" onclick="window.location.href='collection.html'">
+                    <img class="menu-icon" src="assets/sprites/menu/ship.svg" alt="Hangar" onerror="this.src='assets/sprites/menu/rocket.png'">
+                    <span>Hangar</span>
+                </button>
+            </div>
+
+            <img id="jetLaunchBtn" class="jet-launch" src="assets/sprites/menu/Docked_jet.png" alt="Launch Docked Jet (Start)" title="Launch Mission" role="button" tabindex="0" aria-label="Launch Mission" loading="eager" fetchpriority="high" decoding="async" />
+
+            <div class="hero-buttons right">
+                <button class="cp-btn hero-btn" id="baseBuilderBtn_hero">
+                    <img class="menu-icon" src="assets/sprites/menu/hq.png" alt="Orbital Base">
+                    <span>Orbital Base</span>
+                </button>
+                <button class="cp-btn hero-btn" id="shopBtn_hero">
+                    <img class="menu-icon" src="assets/sprites/menu/rocket.png" alt="Shop">
+                    <span>Shop</span>
+                </button>
+                <button class="cp-btn hero-btn" id="startGameBtn_hero">
+                    <img class="menu-icon" src="assets/sprites/menu/play.png" alt="Launch">
+                    <span>Launch Mission</span>
+                </button>
+            </div>
+            <!-- Container for other screens so they appear inside the GUI window on mobile -->
+            <div class="gui-content" aria-live="polite"></div>
+            </div>
+
+            <!-- Holographic game title shown bottom-center inside the GUI window -->
+            <div class="holo-title" aria-hidden="true">GALAXY CONQUEST</div>
+        </div>
+
+        <!-- In-window Shop modal (loads shop.html into .shop-body) -->
+        <div id="shopModal" class="shop-modal hidden" role="dialog" aria-modal="true" aria-label="Shop">
+            <div class="shop-sheet">
+                <div class="shop-head">
+                    <div class="shop-title">Shop</div>
+                    <button id="shopCloseBtn" class="cp-btn shop-close" aria-label="Close shop">✕</button>
+                </div>
+                <div class="shop-body">Loading...</div>
+            </div>
+        </div>
+
+        <div class="title-screen hidden">
+            <div class="satellite-menu">
+                <div class="status-bar">
+                    <div class="logo-cluster">
+                        <div class="logo-emblem">◎</div>
+                        <div>
+                            <p class="status-label">Retro Satellite Command</p>
+                            <h1 class="game-title">GALAXY CONQUEST</h1>
+                        </div>
+                    </div>
+                    <div class="pilot-chip">
+                        <span class="chip-label">Pilot</span>
+                        <span class="chip-value" id="currentPilot">Rookie Pilot</span>
+                        <span class="chip-subtext" id="baseTierBadge">Tier 01</span>
+                    </div>
+                </div>
+
+                <div class="stat-strip">
+                    <div class="stat-chip">
+                        <span class="stat-label">Credits</span>
+                        <span class="stat-value" id="playerCredits">0</span>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="stat-label">Best Distance</span>
+                        <span class="stat-value" id="bestDistance">0 km</span>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="stat-label">Total Kills</span>
+                        <span class="stat-value" id="totalKills">0</span>
+                    </div>
+                </div>
+
+                <section class="orbital-stage" id="orbitalStage" data-tier="1">
+                    <div class="orbit-halo">
+                        <div class="satellite-stack">
+                            <div class="dish-arm"></div>
+                            <div class="dish-arm reverse"></div>
+                            <div class="satellite-core">
+                                <span class="core-ring"></span>
+                                <span class="core-ring delay"></span>
+                                <span class="core-light"></span>
+                            </div>
+                        </div>
+                        <div class="orbital-drone drone-left"></div>
+                        <div class="orbital-drone drone-right"></div>
+                        <div class="orbital-drone drone-top"></div>
+                    </div>
+                    <div class="launch-pad" id="launchPad">
+                        <div class="launch-rails"></div>
+                        <div class="launch-ship" id="launchShip">
+                            <div class="ship-body">
+                                <span class="ship-stripe"></span>
+                                <span class="ship-cockpit"></span>
+                            </div>
+                            <div class="ship-shadow"></div>
+                            <div class="ship-thruster"></div>
+                        </div>
+                        <div class="thruster-plume"></div>
+                    </div>
+                    <button class="launch-btn cp-btn" id="startGameBtn">
+                        <span class="btn-title">Launch Mission</span>
+                        <span class="btn-subtext" id="launchStatus">Orbital rails primed</span>
+                    </button>
+
+                    <div class="base-progress">
+                        <div class="progress-header">
+                            <div>
+                                <p class="chip-label">Base Tier Status</p>
+                                <p class="progress-title" id="baseTierLabel">Relay Outpost</p>
+                                <p class="progress-subtext" id="baseTierDescription">Low-orbit comms array for rookie pilots.</p>
+                            </div>
+                            <div class="next-goal" id="baseNextGoal">Next upgrade unlocks at 10 km</div>
+                        </div>
+                        <div class="progress-meter">
+                            <div class="progress-fill" id="baseProgressFill"></div>
+                        </div>
+                        <ul class="module-grid" id="baseModuleList">
+                            <li class="module-card" data-module="dish">
+                                <span class="module-label">Tri-Band Dish</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                            <li class="module-card" data-module="radar">
+                                <span class="module-label">Pulse Radar</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                            <li class="module-card" data-module="shield">
+                                <span class="module-label">Flux Shield</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                            <li class="module-card" data-module="drones">
+                                <span class="module-label">Drone Escorts</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                            <li class="module-card" data-module="hangar">
+                                <span class="module-label">Launch Hangar</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                            <li class="module-card" data-module="relay">
+                                <span class="module-label">Quantum Relay</span>
+                                <span class="module-status">Locked</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="control-grid">
+                    <button class="control-card" id="baseBuilderBtn">
+                        <img class="menu-icon" src="assets/sprites/menu/hq.png" alt="Orbital Base">
+                        <span class="control-title">Orbital Base</span>
+                        <span class="control-subtext">Build checkpoints & warp anchors</span>
+                    </button>
+                    <button class="control-card" id="upgradesBtn" data-fullpage="true" onclick="window.location.href='upgrades.html'">
+                        <img class="menu-icon" src="assets/sprites/menu/upgrades.png" alt="Upgrades">
+                        <span class="control-title">Ship Upgrades</span>
+                        <span class="control-subtext">Tune weapons & thrusters</span>
+                    </button>
+                    <button class="control-card" id="charactersBtn">
+                        <img class="menu-icon" src="assets/sprites/menu/pilot.png" alt="Pilots">
+                        <span class="control-title">Pilot Roster</span>
+                        <span class="control-subtext">Swap aces & perks</span>
+                    </button>
+                    <button class="control-card" id="shopBtn">
+                        <img class="menu-icon" src="assets/sprites/menu/rocket.png" alt="Shop">
+                        <span class="control-title">Shop</span>
+                        <span class="control-subtext">Buy cosmetics & bundles</span>
+                    </button>
+                    <button class="control-card" id="hangarBtn" data-fullpage="true" onclick="window.location.href='collection.html'">
+                        <img class="menu-icon" src="assets/sprites/menu/ship.svg" alt="Hangar" onerror="this.src='assets/sprites/menu/rocket.png'">
+                        <span class="control-title">Hangar</span>
+                        <span class="control-subtext">View ships & hangar</span>
+                    </button>
+                </section>
+
+                <section class="intel-panels">
+                    <div class="intel-card">
+                        <div class="intel-title">Resource Telemetry</div>
+                        <div class="intel-grid">
+                            <div class="intel-stat">
+                                <span class="intel-label">⚡ Energy</span>
+                                <span class="intel-value" id="intelEnergy">0</span>
+                            </div>
+                            <div class="intel-stat">
+                                <span class="intel-label">🔧 Metal</span>
+                                <span class="intel-value" id="intelMetal">0</span>
+                            </div>
+                            <div class="intel-stat">
+                                <span class="intel-label">💎 Crystals</span>
+                                <span class="intel-value" id="intelCrystals">0</span>
+                            </div>
+                            <div class="intel-stat">
+                                <span class="intel-label">🪐 Dark Matter</span>
+                                <span class="intel-value" id="intelDarkMatter">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="intel-card compact">
+                        <div class="intel-title">Flight Log</div>
+                        <ul class="intel-list">
+                            <li>
+                                <span>Farthest Distance</span>
+                                <span id="farthestDistanceMini">0 km</span>
+                            </li>
+                            <li>
+                                <span>Total Kills</span>
+                                <span id="intelKills">0</span>
+                            </li>
+                            <li>
+                                <span>Credits Banked</span>
+                                <span id="intelCredits">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Ship Upgrades Screen -->
+        <div class="upgrade-screen hidden">
+            <h2 class="screen-title">FLEET UPGRADES</h2>
+            <div class="screen-header">
+                <div class="currency-display">
+                    Credits: <span id="menuCurrency">0</span>
+                </div>
+            </div>
+            
+            <div class="upgrades-container" id="upgradesContainer">
+                <!-- Upgrades will be dynamically generated by JavaScript -->
+            </div>
+
+            <button class="menu-btn back-btn" id="upgradesBackBtn">BACK TO HANGAR</button>
+        </div>
+
+        <!-- Galaxy Overview Screen -->
+        <div class="galaxy-screen hidden">
+            <h2 class="screen-title">GALAXY OVERVIEW</h2>
+            
+            <div class="galaxy-stats">
+                <div class="resource-overview">
+                    <h3 style="color: #4a90e2; margin-bottom: 15px;">📦 Resource Stockpiles</h3>
+                    <div class="resource-grid">
+                        <div class="resource-stat">
+                            <span class="resource-icon">⚡</span>
+                            <span class="resource-name">Energy</span>
+                            <span class="resource-amount" id="galaxyEnergy">0</span>
+                        </div>
+                        <div class="resource-stat">
+                            <span class="resource-icon">🔧</span>
+                            <span class="resource-name">Metal</span>
+                            <span class="resource-amount" id="galaxyMetal">0</span>
+                        </div>
+                        <div class="resource-stat">
+                            <span class="resource-icon">💎</span>
+                            <span class="resource-name">Crystals</span>
+                            <span class="resource-amount" id="galaxyCrystals">0</span>
+                        </div>
+                        <div class="resource-stat">
+                            <span class="resource-icon">🌌</span>
+                            <span class="resource-name">Dark Matter</span>
+                            <span class="resource-amount" id="galaxyDarkMatter">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bases-overview">
+                    <h3 style="color: #4a90e2; margin-bottom: 15px;">🏗️ Galactic Bases</h3>
+                    <div class="bases-list" id="basesList">
+                        <div class="no-bases">No bases constructed yet. Reach 5km in combat to unlock warp portals!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="galaxy-actions">
+                <button class="menu-btn" id="manageBasesBtn" style="background: linear-gradient(135deg, #00ff88, #00cc6a);">🛸 MANAGE BASES</button>
+                <button class="menu-btn" id="galaxyGuideBtn" style="background: linear-gradient(135deg, #ff6600, #cc5500);">📖 GALAXY GUIDE</button>
+            </div>
+
+        </div>
+
+        <!-- Hangar Screen (formerly Collection) -->
+        <div class="collection-screen hidden">
+            <h2 class="screen-title">HANGAR</h2>
+            
+            <div class="collection-header">
+                <!-- Holographic hangar gallery: will be populated by JS -->
+                <div class="holo-hangar" id="holoHangar" aria-hidden="false">
+                    <!-- ship cards injected here -->
+                </div>
+                <div class="completion-stats">
+                    <div class="completion-item">
+                        <span class="completion-label">Enemies</span>
+                        <span class="completion-value" id="enemyCompletion">0%</span>
+                    </div>
+                    <div class="completion-item">
+                        <span class="completion-label">Upgrades</span>
+                        <span class="completion-value" id="upgradeCompletion">0%</span>
+                    </div>
+                    <div class="completion-item">
+                        <span class="completion-label">Achievements</span>
+                        <span class="completion-value" id="achievementCompletion">0%</span>
+                    </div>
+                    <div class="completion-item">
+                        <span class="completion-label">Overall</span>
+                        <span class="completion-value" id="overallCompletion">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-tabs">
+                <button class="tab-btn active" data-tab="enemies">Enemies</button>
+                <button class="tab-btn" data-tab="upgrades">Upgrades</button>
+                <button class="tab-btn" data-tab="achievements">Achievements</button>
+                <button class="tab-btn" data-tab="statistics">Statistics</button>
+            </div>
+
+            <div class="collection-content">
+                <!-- Enemy Collection -->
+                <div class="collection-tab active" id="enemiesTab">
+                    <div class="collection-categories">
+                        <button class="category-btn active" data-category="regular">Regular</button>
+                        <button class="category-btn" data-category="miniboss">Mini-Bosses</button>
+                        <button class="category-btn" data-category="megaboss">Mega-Bosses</button>
+                    </div>
+                    <div class="collection-grid" id="enemyGrid">
+                        <!-- Enemy cards will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Upgrade Collection -->
+                <div class="collection-tab" id="upgradesTab">
+                    <div class="collection-categories">
+                        <button class="category-btn active" data-category="weapons">Weapons</button>
+                        <button class="category-btn" data-category="defense">Defense</button>
+                        <button class="category-btn" data-category="movement">Movement</button>
+                        <button class="category-btn" data-category="special">Special</button>
+                    </div>
+                    <div class="collection-grid" id="upgradeGrid">
+                        <!-- Upgrade cards will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Achievement Collection -->
+                <div class="collection-tab" id="achievementsTab">
+                    <div class="collection-grid" id="achievementGrid">
+                        <!-- Achievement cards will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="collection-tab" id="statisticsTab">
+                    <div class="statistics-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">💀</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Total Kills</div>
+                                <div class="stat-value" id="statTotalKills">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📏</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Max Distance</div>
+                                <div class="stat-value" id="statMaxDistance">0 km</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Credits Earned</div>
+                                <div class="stat-value" id="statCreditsEarned">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Play Time</div>
+                                <div class="stat-value" id="statPlayTime">0h 0m</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Max Combo</div>
+                                <div class="stat-value" id="statMaxCombo">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Max Streak</div>
+                                <div class="stat-value" id="statMaxStreak">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👑</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Bosses Defeated</div>
+                                <div class="stat-value" id="statBossesDefeated">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🌟</div>
+                            <div class="stat-info">
+                                <div class="stat-name">Mega Bosses</div>
+                                <div class="stat-value" id="statMegaBosses">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="menu-btn back-btn" id="collectionBackBtn">BACK TO HANGAR</button>
+        </div>
+    </div>
+    
+    <!-- Decorative rotating moon background -->
+    <img id="menuMoon" src="assets/sprites/menu/moon.png" srcset="assets/sprites/menu/moon.png 1x, assets/sprites/menu/moon@2x.png 2x, assets/sprites/menu/moon@3x.png 3x" onerror="this.onerror=null;this.src='assets/sprites/menu/moon.svg'" alt="moon" aria-hidden="true">
+
+    <script src="js/asset-fallbacks.js"></script>
+    <script src="js/save-system.js"></script>
+    <script src="js/ship-registry.js"></script>
+    <script src="js/character-system.js"></script>
+    <script src="js/upgrade-system.js"></script>
+    <script src="js/galaxy-resource-manager.js"></script>
+    <script src="js/base-building-system.js"></script>
+    <script src="js/character-menu.js"></script>
+    <script src="js/collection-system.js"></script>
+    <script src="js/vortex-bg.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+</html>

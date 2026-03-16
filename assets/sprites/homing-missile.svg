@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Back tail section (black) -->
+  <rect x="24" y="0" width="16" height="16" fill="#000000"/>
+  <rect x="20" y="8" width="8" height="8" fill="#000000"/>
+  <rect x="36" y="8" width="8" height="8" fill="#000000"/>
+  
+  <!-- Body transitions from red to yellow (warm colors for homing) -->
+  <rect x="20" y="16" width="24" height="8" fill="#cc0000"/>
+  <rect x="20" y="24" width="24" height="8" fill="#dd2200"/>
+  
+  <!-- Mid-section darker red -->
+  <rect x="20" y="32" width="24" height="8" fill="#bb0000"/>
+  <rect x="24" y="32" width="16" height="8" fill="#aa0000"/>
+  
+  <!-- Head section becomes cream/yellow -->
+  <rect x="20" y="40" width="24" height="8" fill="#ffdd88"/>
+  <rect x="24" y="40" width="16" height="8" fill="#ffffaa"/>
+  
+  <!-- Rocket nozzle -->
+  <rect x="28" y="48" width="8" height="8" fill="#ff6600"/>
+  <rect x="26" y="56" width="12" height="8" fill="#ffaa00"/>
+  
+  <!-- Engine glow accents -->
+  <rect x="24" y="56" width="4" height="4" fill="#ffff00"/>
+  <rect x="36" y="56" width="4" height="4" fill="#ffff00"/>
+</svg>

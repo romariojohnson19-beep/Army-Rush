@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b101f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Keep legacy apple status bar meta for older iOS versions; prefer generic mobile-web-app-capable above -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Galaxy Conquest - Space Combat</title>
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+</head>
+<body class="theme-dark-neon">
+    <div class="game-container">
+        <!-- Game Canvas - Full Screen -->
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <!-- Top Status Bar - Compact and Modern -->
+        <div class="status-bar">
+            <div class="status-primary">
+                <div class="status-item score">
+                    <div class="pixel-icon">⭐</div>
+                    <div class="status-value" id="score-value">0</div>
+                </div>
+                <div class="status-item distance">
+                    <div class="pixel-icon">📍</div>
+                    <div class="status-value" id="distance-value">0</div>
+                    <div class="status-unit">KM</div>
+                </div>
+            </div>
+            <div class="status-secondary">
+                <div class="status-item wave">
+                    <div class="pixel-icon">🎯</div>
+                    <div class="status-value" id="wave-value">1</div>
+                </div>
+                <div class="status-item kills">
+                    <div class="pixel-icon">💀</div>
+                    <div class="status-value" id="kills-value">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Bar - Modern Pixel Design -->
+        <div class="health-bar">
+            <div class="health-container">
+                <div class="health-fill" id="health-fill"></div>
+                <div class="health-glow"></div>
+            </div>
+            <div class="health-text">
+                <span class="health-label">HULL</span>
+                <span class="health-value" id="health-value">100/100</span>
+            </div>
+        </div>
+
+        <!-- Combo Display - Enhanced for Mobile -->
+        <div class="combo-display" id="combo-display" style="display: none;">
+            <div class="combo-core">
+                <div class="combo-flame">🔥</div>
+                <div class="combo-number" id="streak-value">0</div>
+                <div class="combo-label">STREAK</div>
+            </div>
+            <div class="combo-multiplier">
+                <div class="multiplier-text">COMBO</div>
+                <span class="multiplier-value" id="combo-value">1.0</span>
+                <div class="multiplier-text">x</div>
+            </div>
+        </div>
+
+        <!-- Power-Up Display - Floating Tech Chip -->
+        <div class="power-display" id="power-ups-ui">
+            <div class="power-chip">
+                <div class="chip-icon">
+                    <div class="power-glow" id="power-glow"></div>
+                    <div class="power-ship" id="power-ship"></div>
+                </div>
+                <div class="chip-info">
+                    <div class="chip-label">POWER-UP</div>
+                    <div class="chip-status" id="power-status">None</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left Side Panel - Collapsible -->
+        <div class="side-panel left-panel">
+            <!-- Daily Challenges -->
+            <div class="panel-section challenges-section">
+                <div class="section-header">
+                    <div class="pixel-icon">📋</div>
+                    <div class="section-title">DAILY</div>
+                </div>
+                <div class="challenges-list" id="dailyChallengesList">
+                    <!-- Challenges populated here -->
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="panel-section achievements-section">
+                <div class="section-header">
+                    <div class="pixel-icon">🏆</div>
+                    <div class="section-title">ACHIEVEMENTS</div>
+                    <div class="section-count" id="achievementCount">0/20</div>
+                </div>
+                <div class="achievements-list" id="recentAchievements">
+                    <!-- Achievements populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Panel - Tech Stats -->
+        <div class="side-panel right-panel">
+            <!-- Navigation Compass -->
+            <div class="panel-section nav-section">
+                <div class="nav-display">
+                    <div class="nav-ring">
+                        <div class="nav-segments">
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                        </div>
+                        <div class="nav-center">
+                            <div class="nav-value" id="nav-value">0</div>
+                            <div class="nav-unit">KM</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-stats">
+                    <div class="nav-stat">
+                        <span class="stat-label">BEST</span>
+                        <span class="stat-value" id="farthest-distance-value">0</span>
+                    </div>
+                    <div class="nav-stat">
+                        <span class="stat-label">DIFF</span>
+                        <span class="stat-value" id="difficulty-value">x1.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources -->
+            <div class="panel-section resources-section">
+                <div class="resource-grid">
+                    <div class="resource-item">
+                        <div class="resource-icon">⚡</div>
+                        <div class="resource-value" id="energy-value">0</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">🔧</div>
+                        <div class="resource-value" id="metal-value">0</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">💎</div>
+                        <div class="resource-value" id="crystals-value">0</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">🌌</div>
+                        <div class="resource-value" id="dark-matter-value">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warp Portal Indicator -->
+            <div class="warp-portal" id="warpPortalInfo" style="display:none;">
+                <div class="warp-icon">◉</div>
+                <div class="warp-text" id="nextPortal">WARP 30</div>
+            </div>
+        </div>
+
+        <!-- Bottom Control Bar - Touch Controls -->
+        <div class="control-bar">
+            <div class="control-section">
+                <button class="control-btn pause-btn" id="pause-btn">
+                    <div class="btn-icon">⏸️</div>
+                    <div class="btn-label">PAUSE</div>
+                </button>
+            </div>
+            <div class="control-section">
+                <div class="currency-display">
+                    <div class="currency-icon">💰</div>
+                    <div class="currency-value" id="currency-value">0</div>
+                </div>
+            </div>
+            <div class="control-section">
+                <button class="control-btn menu-btn" id="menu-btn">
+                    <div class="btn-icon">🏠</div>
+                    <div class="btn-label">MENU</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Over Overlay - Full Screen Modal -->
+        <div id="game-over-overlay" class="game-over-overlay hidden">
+            <div class="game-over-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">MISSION FAILED</h2>
+                    <p class="modal-subtitle">Your ship has been destroyed</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-content">
+                            <div class="stat-label">FINAL SCORE</div>
+                            <div class="stat-value" id="final-score-value">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📍</div>
+                        <div class="stat-content">
+                            <div class="stat-label">DISTANCE</div>
+                            <div class="stat-value" id="final-distance-value">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💀</div>
+                        <div class="stat-content">
+                            <div class="stat-label">ENEMIES</div>
+                            <div class="stat-value" id="final-kills-value">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card highlight">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-label">CREDITS</div>
+                            <div class="stat-value" id="credits-earned-value">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="action-btn primary" id="restart-action-btn">
+                        <div class="btn-icon">🔄</div>
+                        <div class="btn-text">RESTART MISSION</div>
+                    </button>
+                    <button class="action-btn secondary" id="menu-action-btn">
+                        <div class="btn-icon">🏠</div>
+                        <div class="btn-text">MAIN MENU</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Menu - Full Screen Modal -->
+        <div id="pause-overlay" class="pause-overlay hidden">
+            <div class="pause-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">MISSION PAUSED</h2>
+                    <p class="modal-subtitle">Command options available</p>
+                </div>
+                <div class="command-grid">
+                    <button class="command-btn primary" id="resume-mission-btn">
+                        <div class="btn-icon">▶️</div>
+                        <div class="btn-text">RESUME MISSION</div>
+                    </button>
+                    <button class="command-btn" id="main-menu-btn">
+                        <div class="btn-icon">🏠</div>
+                        <div class="btn-text">MAIN MENU</div>
+                    </button>
+                    <button class="command-btn" id="base-btn">
+                        <div class="btn-icon">🏭</div>
+                        <div class="btn-text">BASE BUILDER</div>
+                    </button>
+                    <button class="command-btn" id="audio-btn">
+                        <div class="btn-icon">🔊</div>
+                        <div class="btn-text">SOUND: ON</div>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <p class="footer-text">Galaxy Conquest v2.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/asset-fallbacks.js"></script>
+    <script src="js/audio-manager.js"></script>
+    <script src="js/asset-manager.js"></script>
+    <script src="js/save-system.js"></script>
+    <script src="js/character-system.js"></script>
+    <script src="js/upgrade-system.js"></script>
+    <script src="js/achievement-manager.js"></script>
+    <script src="js/daily-challenges.js"></script>
+    <script src="js/galaxy-resource-manager.js"></script>
+    <script src="js/warp-portal-system.js"></script>
+    <script src="js/base-building-system.js"></script>
+    <script src="js/relic-system.js"></script>
+    <script src="js/collection-system.js"></script>
+    <script src="js/projectile.js"></script>
+    <script src="js/enemy.js"></script>
+    <script src="js/powerup.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/support-fighter.js"></script>
+    <script src="js/resource-pickup.js"></script>
+    <script src="js/asteroid-field.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/leaderboard.js"></script>
+</body>
+</html>

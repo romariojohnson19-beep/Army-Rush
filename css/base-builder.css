@@ -1,0 +1,696 @@
+/* Galaxy Conquest Space Port Base Builder Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    background: 
+        radial-gradient(ellipse 800px 400px at 50% -100px, rgba(0, 136, 255, 0.1) 0%, transparent 100%),
+        radial-gradient(ellipse at center bottom, #0a0a1a 0%, #000510 50%, #000000 100%);
+    color: #e0e6ed;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            rgba(0, 255, 136, 0.03) 1px,
+            transparent 2px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            rgba(0, 255, 136, 0.03) 1px,
+            transparent 2px,
+            transparent 40px
+        );
+    pointer-events: none;
+    animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(40px); }
+}
+
+.base-builder-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Section - Space Port Control Tower */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: 
+        linear-gradient(180deg, rgba(0, 20, 40, 0.95) 0%, rgba(0, 10, 20, 0.9) 100%);
+    border-bottom: 3px solid #00ff88;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 255, 136, 0.2);
+    position: relative;
+}
+
+.header-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%,
+        #00ff88 20%,
+        #0088ff 50%,
+        #00ff88 80%,
+        transparent 100%
+    );
+}
+
+.checkpoint-info h2 {
+    color: #00ff88;
+    font-size: 28px;
+    margin-bottom: 5px;
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.checkpoint-info h2::before {
+    content: '⬡ ';
+    color: #0088ff;
+}
+
+.checkpoint-tier {
+    font-size: 14px;
+    color: #0088ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    background: rgba(0, 136, 255, 0.2);
+    border: 1px solid #0088ff;
+    border-radius: 4px;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(0, 136, 255, 0.4);
+}
+
+.resource-display {
+    display: flex;
+    gap: 15px;
+}
+
+.resource-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(0, 20, 40, 0.8);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.resource-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+    animation: resource-scan 3s ease-in-out infinite;
+}
+
+@keyframes resource-scan {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+.resource-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+.resource-amount {
+    font-weight: bold;
+    color: #00ff88;
+    font-size: 20px;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
+
+.resource-label {
+    font-size: 11px;
+    color: #80d4ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Left Sidebar - Space Port Terminals */
+.building-categories {
+    width: 250px;
+    background: 
+        linear-gradient(135deg, rgba(0, 20, 40, 0.9) 0%, rgba(0, 10, 20, 0.95) 100%);
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.2),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.building-categories h3 {
+    color: #00ff88;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 16px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+.category-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.6), rgba(0, 10, 20, 0.8));
+    border: 2px solid rgba(0, 136, 255, 0.3);
+    border-radius: 8px;
+    color: #80d4ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 136, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.category-tab:hover::before {
+    left: 100%;
+}
+
+.category-tab:hover {
+    background: linear-gradient(135deg, rgba(0, 136, 255, 0.3), rgba(0, 68, 136, 0.4));
+    border-color: #0088ff;
+    transform: translateX(5px);
+    color: #ffffff;
+}
+
+.category-tab.active {
+    background: linear-gradient(135deg, #00ff88, #00aa66);
+    box-shadow: 
+        0 4px 15px rgba(0, 255, 136, 0.5),
+        0 0 30px rgba(0, 255, 136, 0.3);
+    border-color: #00ff88;
+    color: #000000;
+    font-weight: bold;
+}
+
+.tab-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Center Area - Base Grid */
+.base-view-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.base-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 10px;
+    padding: 20px;
+    background: 
+        linear-gradient(135deg, rgba(0, 20, 40, 0.5) 0%, rgba(0, 10, 20, 0.7) 100%);
+    border-radius: 12px;
+    border: 2px solid #00ff88;
+    min-height: 400px;
+    box-shadow: 
+        0 0 30px rgba(0, 255, 136, 0.2),
+        inset 0 0 50px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+
+.base-grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            rgba(0, 255, 136, 0.05) 1px,
+            transparent 2px,
+            transparent 20px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            rgba(0, 255, 136, 0.05) 1px,
+            transparent 2px,
+            transparent 20px
+        );
+    pointer-events: none;
+    border-radius: 12px;
+}
+
+.building-slot {
+    background: rgba(0, 20, 40, 0.6);
+    border: 2px dashed rgba(0, 255, 136, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.building-slot::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: radial-gradient(circle at center, rgba(0, 136, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 6px;
+}
+
+.building-slot:hover::before {
+    opacity: 1;
+}
+
+.building-slot:hover {
+    border-color: #00ff88;
+    background: rgba(0, 255, 136, 0.15);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+.building-slot.occupied {
+    border: 2px solid #00ff88;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 136, 102, 0.3));
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.building-slot.occupied:hover {
+    border-color: #00ffaa;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 136, 102, 0.4));
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+}
+
+.building-in-slot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.building-in-slot .building-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.building-in-slot .building-label {
+    font-size: 10px;
+    text-align: center;
+    color: #b0b6c3;
+}
+
+.base-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.base-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #b0b6c3;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+/* Right Sidebar - Buildings List */
+.buildings-panel {
+    width: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.buildings-panel h3 {
+    color: #4a90e2;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.building-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.building-item:hover {
+    background: rgba(74, 144, 226, 0.1);
+    transform: translateX(5px);
+}
+
+.building-item.affordable {
+    border-color: #00ff88;
+}
+
+.building-item.expensive {
+    border-color: #ff4757;
+    opacity: 0.6;
+}
+
+.building-item-icon {
+    font-size: 32px;
+    width: 40px;
+    text-align: center;
+}
+
+.building-item-info h4 {
+    color: #e0e6ed;
+    margin-bottom: 5px;
+}
+
+.building-item-cost {
+    font-size: 12px;
+    color: #b0b6c3;
+}
+
+/* Building Details Popup */
+.building-details-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.building-details-popup.show {
+    display: flex;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, #2a2a4a 0%, #1e1e3f 100%);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    border: 2px solid #4a90e2;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.close-popup {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #ff4757;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.building-image {
+    text-align: center;
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.popup-content h3 {
+    color: #4a90e2;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.popup-content p {
+    color: #b0b6c3;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.building-stats {
+    margin-bottom: 20px;
+}
+
+.building-cost {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cost-item:last-child {
+    margin-bottom: 0;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.popup-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.build-button {
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    color: #000;
+}
+
+.build-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+}
+
+.upgrade-button {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #fff;
+}
+
+.demolish-button {
+    background: linear-gradient(135deg, #ff4757, #c44569);
+    color: #fff;
+}
+
+/* Control Panel */
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.control-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+/* Notifications */
+.notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+.notification {
+    background: rgba(74, 144, 226, 0.9);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+    background: rgba(0, 255, 136, 0.9);
+    color: #000;
+}
+
+.notification.error {
+    background: rgba(255, 71, 87, 0.9);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .building-categories,
+    .buildings-panel {
+        width: 100%;
+    }
+    
+    .resource-display {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .base-grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+    }
+    
+    .category-tabs {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .category-tab {
+        flex: 1;
+        min-width: 120px;
+    }
+}

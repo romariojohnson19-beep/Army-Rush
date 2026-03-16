@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b101f">
+    <title>Mobile Layout Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .test-canvas {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00ffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Game Canvas - Full Screen -->
+        <div class="test-canvas" id="gameCanvas">
+            GAME CANVAS AREA<br>
+            (400x600)
+        </div>
+
+        <!-- Top Status Bar -->
+        <div class="status-bar">
+            <div class="status-primary">
+                <div class="status-item score">
+                    <div class="pixel-icon">⭐</div>
+                    <div class="status-value" id="score-value">1250</div>
+                </div>
+                <div class="status-item distance">
+                    <div class="pixel-icon">📍</div>
+                    <div class="status-value" id="distance-value">42</div>
+                    <div class="status-unit">KM</div>
+                </div>
+            </div>
+            <div class="status-secondary">
+                <div class="status-item wave">
+                    <div class="pixel-icon">🎯</div>
+                    <div class="status-value" id="wave-value">5</div>
+                </div>
+                <div class="status-item kills">
+                    <div class="pixel-icon">💀</div>
+                    <div class="status-value" id="kills-value">23</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Bar -->
+        <div class="health-bar">
+            <div class="health-container">
+                <div class="health-fill" id="health-fill" style="width: 75%;"></div>
+                <div class="health-glow"></div>
+            </div>
+            <div class="health-text">
+                <span class="health-label">HULL</span>
+                <span class="health-value" id="health-value">75/100</span>
+            </div>
+        </div>
+
+        <!-- Combo Display -->
+        <div class="combo-display" id="combo-display">
+            <div class="combo-core">
+                <div class="combo-flame">🔥</div>
+                <div class="combo-number" id="streak-value">7</div>
+                <div class="combo-label">STREAK</div>
+            </div>
+            <div class="combo-multiplier">
+                <div class="multiplier-text">COMBO</div>
+                <span class="multiplier-value" id="combo-value">2.5</span>
+                <div class="multiplier-text">x</div>
+            </div>
+        </div>
+
+        <!-- Power Display -->
+        <div class="power-display" id="power-ups-ui">
+            <div class="power-chip">
+                <div class="chip-icon">
+                    <div class="power-glow" id="power-glow"></div>
+                    <div class="power-ship" id="power-ship"></div>
+                </div>
+                <div class="chip-info">
+                    <div class="chip-label">POWER-UP</div>
+                    <div class="chip-status" id="power-status">Rapid Fire</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left Panel -->
+        <div class="side-panel left-panel">
+            <div class="panel-section">
+                <div class="section-header">
+                    <span class="section-title">NAVIGATION</span>
+                </div>
+                <div class="nav-display">
+                    <div class="nav-ring">
+                        <div class="nav-segments">
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                            <div class="segment"></div>
+                        </div>
+                        <div class="nav-center">
+                            <div class="nav-value" id="nav-value">42</div>
+                            <div class="nav-unit">KM</div>
+                        </div>
+                    </div>
+                    <div class="nav-stats">
+                        <div class="nav-stat">
+                            <span class="stat-label">BEST</span>
+                            <span class="stat-value" id="farthest-distance-value">156</span>
+                        </div>
+                        <div class="nav-stat">
+                            <span class="stat-label">DIFF</span>
+                            <span class="stat-value" id="difficulty-value">x2.1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="side-panel right-panel">
+            <div class="panel-section">
+                <div class="section-header">
+                    <span class="section-title">RESOURCES</span>
+                    <span class="section-count">4/4</span>
+                </div>
+                <div class="resource-grid">
+                    <div class="resource-item">
+                        <div class="resource-icon">⚡</div>
+                        <div class="resource-value" id="energy-value">1250</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">🔧</div>
+                        <div class="resource-value" id="metal-value">890</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">💎</div>
+                        <div class="resource-value" id="crystals-value">45</div>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-icon">🌌</div>
+                        <div class="resource-value" id="dark-matter-value">12</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warp Portal Indicator -->
+            <div class="warp-portal" id="warpPortalInfo">
+                <div class="warp-icon">◉</div>
+                <div class="warp-text" id="nextPortal">WARP 30</div>
+            </div>
+        </div>
+
+        <!-- Bottom Control Bar -->
+        <div class="control-bar">
+            <div class="control-section">
+                <button class="control-btn pause-btn" id="pause-btn">
+                    <div class="btn-icon">⏸️</div>
+                    <div class="btn-label">PAUSE</div>
+                </button>
+            </div>
+            <div class="control-section">
+                <div class="currency-display">
+                    <div class="currency-icon">💰</div>
+                    <div class="currency-value" id="currency-value">2500</div>
+                </div>
+            </div>
+            <div class="control-section">
+                <button class="control-btn menu-btn" id="menu-btn">
+                    <div class="btn-icon">🏠</div>
+                    <div class="btn-label">MENU</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Virtual Joystick (shown on mobile) -->
+        <div id="virtual-joystick" style="display: block;">
+            <div id="joystick-stick"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simple test to show mobile layout
+        console.log('Mobile layout test loaded');
+
+        // Test virtual joystick visibility on mobile
+        if ('ontouchstart' in window) {
+            document.getElementById('virtual-joystick').style.display = 'block';
+        }
+
+        // Add some basic interactivity
+        document.getElementById('pause-btn').addEventListener('click', () => {
+            alert('Pause button clicked!');
+        });
+
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            alert('Menu button clicked!');
+        });
+    </script>
+</body>
+</html>

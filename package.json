@@ -1,0 +1,22 @@
+{
+  "name": "army-rush",
+  "version": "1.0.0",
+  "description": "A retro-style HTML5 Canvas 2D army rush clone game with horizontal movement mechanics and automatic shooting. Built with vanilla JavaScript and designed for easy sprite integration.",
+  "main": "create-placeholders.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -p 8000 -c-1 ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "acorn": "^8.15.0",
+    "playwright": "^1.56.1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "sharp": "^0.34.5"
+  }
+}

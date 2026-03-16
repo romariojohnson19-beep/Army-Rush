@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprite Generator - Army Rush</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #222;
+            color: #fff;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #555;
+            margin: 10px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .sprite-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Army Rush - Sprite Generator</h1>
+    <div class="controls">
+        <button onclick="generateBasicSprites()">Generate Basic Sprites</button>
+        <button onclick="downloadAllSprites()">Download All Sprites</button>
+    </div>
+    
+    <div id="spriteGrid" class="sprite-grid"></div>
+
+    <script>
+        const sprites = [];
+        
+        function createCanvas(width, height) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+            return { canvas, ctx };
+        }
+        
+        function drawPlayerShip(ctx, width, height, color = '#00ff41') {
+            ctx.fillStyle = color;
+            // Simple triangle ship
+            ctx.beginPath();
+            ctx.moveTo(width/2, 2);
+            ctx.lineTo(width/4, height-2);
+            ctx.lineTo(3*width/4, height-2);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Engine glow
+            ctx.fillStyle = '#ff4400';
+            ctx.fillRect(width/2-2, height-4, 4, 2);
+        }
+        
+        function drawEnemy(ctx, width, height, color = '#ff4444') {
+            ctx.fillStyle = color;
+            // Simple diamond enemy
+            ctx.beginPath();
+            ctx.moveTo(width/2, height-2);
+            ctx.lineTo(width/4, height/2);
+            ctx.lineTo(width/2, 2);
+            ctx.lineTo(3*width/4, height/2);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function drawBoss(ctx, width, height, color = '#ff00ff') {
+            ctx.fillStyle = color;
+            // Larger, more complex shape
+            ctx.fillRect(width/4, height/4, width/2, height/2);
+            ctx.fillRect(width/8, height/3, width/4, height/3);
+            ctx.fillRect(5*width/8, height/3, width/4, height/3);
+        }
+        
+        function generateSprite(name, width, height, drawFunction, color) {
+            const { canvas, ctx } = createCanvas(width, height);
+            drawFunction(ctx, width, height, color);
+            
+            sprites.push({ name, canvas });
+            
+            const container = document.createElement('div');
+            container.innerHTML = `<h3>${name}</h3>`;
+            container.appendChild(canvas);
+            document.getElementById('spriteGrid').appendChild(container);
+        }
+        
+        function generateBasicSprites() {
+            document.getElementById('spriteGrid').innerHTML = '';
+            sprites.length = 0;
+            
+            // Player ships
+            generateSprite('player_basic', 32, 24, drawPlayerShip, '#00ff41');
+            generateSprite('player_heavy', 40, 30, drawPlayerShip, '#0088ff');
+            generateSprite('player_fast', 28, 20, drawPlayerShip, '#ffff00');
+            
+            // Enemies
+            generateSprite('enemy_basic', 24, 20, drawEnemy, '#ff4444');
+            generateSprite('enemy_fast', 20, 16, drawEnemy, '#ff8844');
+            generateSprite('enemy_tank', 32, 28, drawEnemy, '#8844ff');
+            generateSprite('enemy_sniper', 22, 26, drawEnemy, '#44ff88');
+            generateSprite('enemy_bomber', 36, 22, drawEnemy, '#ff44ff');
+            generateSprite('enemy_swarm', 16, 14, drawEnemy, '#ffff44');
+            generateSprite('enemy_heavy', 40, 36, drawEnemy, '#ff4488');
+            generateSprite('enemy_stealth', 24, 18, drawEnemy, '#888888');
+            generateSprite('enemy_guardian', 36, 32, drawEnemy, '#4488ff');
+            generateSprite('enemy_assassin', 18, 16, drawEnemy, '#884488');
+            generateSprite('enemy_splitter', 28, 24, drawEnemy, '#88ff44');
+            
+            // Mini bosses
+            generateSprite('miniboss_destroyer', 48, 40, drawBoss, '#ff8800');
+            generateSprite('miniboss_carrier', 52, 36, drawBoss, '#8800ff');
+            generateSprite('miniboss_fortress', 56, 44, drawBoss, '#00ff88');
+            generateSprite('miniboss_hunter', 44, 32, drawBoss, '#ff0088');
+            generateSprite('miniboss_phantom', 42, 34, drawBoss, '#888888');
+            generateSprite('miniboss_berserker', 40, 36, drawBoss, '#ff4400');
+            
+            // Mega bosses
+            generateSprite('megaboss_dreadnought', 80, 60, drawBoss, '#ff0000');
+            generateSprite('megaboss_mothership', 90, 70, drawBoss, '#00ffff');
+            generateSprite('megaboss_leviathan', 76, 56, drawBoss, '#ff00ff');
+            generateSprite('megaboss_overlord', 84, 64, drawBoss, '#ffff00');
+            generateSprite('megaboss_titan', 100, 80, drawBoss, '#8800ff');
+            generateSprite('megaboss_vortex', 72, 72, drawBoss, '#00ff00');
+            generateSprite('megaboss_nemesis', 68, 52, drawBoss, '#ff8800');
+            generateSprite('megaboss_apocalypse', 78, 62, drawBoss, '#880088');
+            generateSprite('megaboss_infinity', 108, 88, drawBoss, '#ffffff');
+        }
+        
+        function downloadSprite(name, canvas) {
+            const link = document.createElement('a');
+            link.download = name + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadAllSprites() {
+            sprites.forEach(sprite => {
+                setTimeout(() => downloadSprite(sprite.name, sprite.canvas), 100);
+            });
+        }
+        
+        // Auto-generate on load
+        window.addEventListener('load', generateBasicSprites);
+    </script>
+</body>
+</html>

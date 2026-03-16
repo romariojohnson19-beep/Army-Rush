@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Conquest - Loading</title>
+    <link rel="stylesheet" href="css/loading-style.css">
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+</head>
+<body class="theme-dark-neon">
+    <div class="loading-container">
+        <div class="loading-screen">
+            <!-- Game Logo -->
+            <div class="game-logo">
+                <h1 class="main-title">GALAXY CONQUEST</h1>
+                <div class="subtitle">Strategic Space Warfare & Base Building</div>
+            </div>
+
+            <!-- Loading Animation -->
+            <div class="loading-animation">
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loadingBar"></div>
+                </div>
+                <div class="loading-text" id="loadingText">Initializing Galaxy Systems...</div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+            </div>
+
+            <!-- Version Info -->
+            <div class="version-info">
+                <div>Version 3.0.0</div>
+                <div>Build: Galaxy Conquest</div>
+            </div>
+
+            <!-- Background Effects -->
+            <div class="stars-container" id="starsContainer"></div>
+            
+            <!-- Skip Button (appears after initial loading) -->
+            <button class="skip-button hidden" id="skipButton">PRESS ANY KEY TO CONTINUE</button>
+        </div>
+    </div>
+
+    <script src="js/loading.js"></script>
+</body>
+</html>

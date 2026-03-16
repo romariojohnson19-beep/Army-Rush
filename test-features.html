@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Army Rush - Feature Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #001122;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .feature-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .feature {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .feature h3 {
+            color: #00ffff;
+            margin-top: 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.implemented {
+            background: #00ff00;
+            color: #000;
+        }
+        .status.enhanced {
+            background: #ffaa00;
+            color: #000;
+        }
+        .test-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .test-links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .test-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="feature-list">
+        <h1 style="text-align: center; color: #00ffff;">🚀 Army Rush - Enhanced Features Test</h1>
+        
+        <div class="feature">
+            <h3>🎵 Menu Music: "Out There" Track</h3>
+            <span class="status implemented">✅ IMPLEMENTED</span>
+            <p>Added the "Out There" music track for menu background music. The AudioManager now includes a dedicated menu music system that plays automatically when the menu loads.</p>
+            <ul>
+                <li>Music file copied to assets/music/OutThere.ogg</li>
+                <li>AudioManager enhanced with playMenuMusic() method</li>
+                <li>Menu automatically starts playing the track on load</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>⚡ Increased Power-up & Boost Spawn Frequency</h3>
+            <span class="status enhanced">🔧 ENHANCED (+15%)</span>
+            <p>Power-up spawn frequency increased by 15% for more exciting gameplay. Base spawn rate reduced from 900 to 765 frames.</p>
+            <ul>
+                <li>More frequent power-up drops during combat</li>
+                <li>Enhanced variety with new power-up types added</li>
+                <li>Better gameplay pacing and reward frequency</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>💎 Enhanced Boss Loot System</h3>
+            <span class="status enhanced">🔧 ENHANCED</span>
+            <p>Bosses now drop significantly more epic and premium loot, including legendary power-ups and bonus resources.</p>
+            <ul>
+                <li>Mini-bosses: 50% chance for 2 drops, 40% epic tier, 30% bonus chance</li>
+                <li>Mega-bosses: 70% chance for 3 drops, 60% epic + 40% legendary, 80% bonus chance</li>
+                <li>Enhanced resource multipliers (2x mini-boss, 3x mega-boss)</li>
+                <li>New legendary power-ups: nuke, currencyDoubler, radio, toolbox, mutation</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>📡 Support Pilot Power-up Enhancement</h3>
+            <span class="status implemented">✅ IMPLEMENTED</span>
+            <p>The support pilot power-up now spawns a random pilot ship that mirrors player movement and provides combat assistance.</p>
+            <ul>
+                <li>Random selection from 12 different pilot ship types</li>
+                <li>Support fighters mirror player movement with formation offset</li>
+                <li>Support fighters shoot automatically with player's bullet level</li>
+                <li>20-second duration with visual feedback</li>
+                <li>Maximum of 2 support fighters active at once</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>🎨 Consistent Resource Sprite System</h3>
+            <span class="status implemented">✅ IMPLEMENTED</span>
+            <p>Resource pickups use consistent, detailed pixel art sprites that match the loot aesthetic.</p>
+            <ul>
+                <li>⚡ Energy: Lightning bolt sprite with cyan glow</li>
+                <li>⚙️ Metal: Gear/cog sprite with metallic appearance</li>
+                <li>💎 Crystals: Diamond sprite with purple/pink glow</li>
+                <li>🌌 Dark Matter: Swirling void sprite with purple energy</li>
+            </ul>
+        </div>
+
+        <div class="test-links">
+            <h2>🎮 Test the Features</h2>
+            <a href="menu.html">🏠 Test Menu Music</a>
+            <a href="game.html">⚔️ Test Enhanced Gameplay</a>
+            <a href="index.html">🚀 Main Menu</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(0, 255, 0, 0.1); border-radius: 8px;">
+            <h3 style="color: #00ff00;">🎯 Implementation Summary</h3>
+            <p>All requested features have been successfully implemented:</p>
+            <p>✅ Menu music with "Out There" track<br>
+            ✅ 15% increased power-up spawn frequency<br>
+            ✅ Enhanced boss loot with epic/premium rewards<br>
+            ✅ Random support pilot ships that mirror player movement<br>
+            ✅ Consistent resource sprite system</p>
+        </div>
+    </div>
+</body>
+</html>

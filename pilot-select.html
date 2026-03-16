@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Selection - Army Rush</title>
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/pilot-select.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+</head>
+<body class="theme-dark-neon">
+    <div class="pilot-select-container">
+        <!-- Header -->
+        <header class="pilot-header">
+            <h1>SELECT YOUR PILOT</h1>
+            <div class="credits-display">
+                <span class="credits-label">Credits:</span>
+                <span id="pilotCredits" class="credits-amount">0</span>
+            </div>
+        </header>
+
+        <!-- Pilot Grid -->
+        <main class="pilot-grid-container">
+            <div id="pilotGrid" class="pilot-grid">
+                <!-- Pilot cards will be generated here -->
+            </div>
+        </main>
+
+        <!-- Pilot Details Panel -->
+        <aside class="pilot-details">
+            <div id="pilotDetails" class="pilot-info">
+                <h2 id="pilotName">Select a Pilot</h2>
+                <div class="pilot-sprite-container">
+                    <div id="pilotSprite" class="pilot-sprite"></div>
+                </div>
+                <p id="pilotDescription">Choose your pilot to see their details.</p>
+                
+                <div class="pilot-stats">
+                    <h3>Combat Stats</h3>
+                    <div class="stat-bars">
+                        <div class="stat-row">
+                            <span class="stat-label">Speed</span>
+                            <div class="stat-bar">
+                                <div id="speedBar" class="stat-fill"></div>
+                            </div>
+                            <span id="speedValue" class="stat-value">1.0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Fire Rate</span>
+                            <div class="stat-bar">
+                                <div id="fireRateBar" class="stat-fill"></div>
+                            </div>
+                            <span id="fireRateValue" class="stat-value">1.0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Armor</span>
+                            <div class="stat-bar">
+                                <div id="armorBar" class="stat-fill"></div>
+                            </div>
+                            <span id="armorValue" class="stat-value">1.0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Luck</span>
+                            <div class="stat-bar">
+                                <div id="luckBar" class="stat-fill"></div>
+                            </div>
+                            <span id="luckValue" class="stat-value">1.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pilot-bonuses">
+                    <h3>Starting Bonuses</h3>
+                    <div id="pilotBonuses" class="bonus-list">
+                        <!-- Bonuses will be displayed here -->
+                    </div>
+                </div>
+
+                <div class="unlock-requirement">
+                    <div id="unlockInfo" class="unlock-info">
+                        <!-- Unlock requirements will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Action Buttons -->
+        <footer class="pilot-actions">
+            <button id="selectPilotBtn" class="btn btn-primary" disabled>SELECT PILOT</button>
+            <button id="backToMenuBtn" class="btn btn-secondary">BACK TO MENU</button>
+        </footer>
+    </div>
+
+    <!-- Loading Scripts -->
+    <script src="js/save-system.js"></script>
+    <script src="js/character-system.js"></script>
+    <script src="js/sprite-generator.js"></script>
+    <script src="js/pilot-select.js"></script>
+</body>
+</html>

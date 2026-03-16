@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Conquest - Space Port Station</title>
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/base-builder.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+</head>
+<body class="theme-dark-neon">
+    <div class="base-builder-container cp-panel">
+        <!-- Header with resources and checkpoint info -->
+    <div class="header-section cp-panel cp-panel--small" style="background:linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.9));">
+            <div class="checkpoint-info">
+                <h2 id="checkpoint-title">🛸 Space Port Station - 5km</h2>
+                <div class="checkpoint-tier" id="checkpoint-tier">SECTOR: Common Zone</div>
+            </div>
+            
+            <div class="resource-display" style="color:#071018;">
+                <div class="resource-item" id="energy-display">
+                    <span class="resource-icon">⚡</span>
+                    <span class="resource-amount">0</span>
+                    <span class="resource-label">Energy</span>
+                </div>
+                <div class="resource-item" id="metal-display">
+                    <span class="resource-icon">🔧</span>
+                    <span class="resource-amount">0</span>
+                    <span class="resource-label">Metal</span>
+                </div>
+                <div class="resource-item" id="crystals-display">
+                    <span class="resource-icon">💎</span>
+                    <span class="resource-amount">0</span>
+                    <span class="resource-label">Crystals</span>
+                </div>
+                <div class="resource-item" id="darkmatter-display">
+                    <span class="resource-icon">🌌</span>
+                    <span class="resource-amount">0</span>
+                    <span class="resource-label">Dark Matter</span>
+                </div>
+                <div class="resource-item" id="blueprints-display">
+                    <span class="resource-icon">🔩</span>
+                    <span class="resource-amount">0</span>
+                    <span class="resource-label">Blueprints</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="main-content">
+            <!-- Left sidebar - Building categories -->
+            <div class="building-categories cp-panel cp-panel--small">
+                <h3>Building Categories</h3>
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="infrastructure">
+                        <span class="tab-icon">🏗️</span>
+                        Infrastructure
+                    </button>
+                    <button class="category-tab" data-category="production">
+                        <span class="tab-icon">⚙️</span>
+                        Production
+                    </button>
+                    <button class="category-tab" data-category="military">
+                        <span class="tab-icon">🚀</span>
+                        Military
+                    </button>
+                    <button class="category-tab" data-category="research">
+                        <span class="tab-icon">🔬</span>
+                        Research
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center area - Building grid and base view -->
+            <div class="base-view-container cp-panel cp-panel--small">
+                <div class="base-grid" id="base-grid">
+                    <!-- Base building slots will be generated here -->
+                </div>
+                <div class="base-info">
+                    <div class="base-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Power Generation:</span>
+                            <span class="stat-value" id="power-generation">0/h</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Defense Rating:</span>
+                            <span class="stat-value" id="defense-rating">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Research Speed:</span>
+                            <span class="stat-value" id="research-speed">100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right sidebar - Available buildings -->
+            <div class="buildings-panel cp-panel cp-panel--small">
+                <h3>Available Buildings</h3>
+                <div class="buildings-list" id="buildings-list">
+                    <!-- Buildings will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Building details popup -->
+        <div class="building-details-popup" id="building-details">
+            <div class="popup-content">
+                <button class="close-popup" id="close-details">&times;</button>
+                <div class="building-image" id="building-image"></div>
+                <h3 id="building-name">Building Name</h3>
+                <p id="building-description">Building description will appear here.</p>
+                
+                <div class="building-stats" id="building-stats">
+                    <!-- Building stats will be populated here -->
+                </div>
+                
+                <div class="building-cost" id="building-cost">
+                    <!-- Cost breakdown will be shown here -->
+                </div>
+                
+                <div class="popup-actions">
+                    <button class="build-button" id="build-button">Build</button>
+                    <button class="upgrade-button" id="upgrade-button" style="display: none;">Upgrade</button>
+                    <button class="demolish-button" id="demolish-button" style="display: none;">Demolish</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control buttons -->
+        <div class="control-panel" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="control-btn cp-btn" id="save-base">💾 Save Base</button>
+            <button class="control-btn cp-btn" id="ship-forge">🔩 Ship Forge</button>
+            <button class="control-btn cp-btn" id="return-to-game">🚀 Return to Combat</button>
+            <button class="control-btn cp-btn" id="view-all-bases">🗺️ View All Bases</button>
+        </div>
+
+        <!-- Notification system -->
+        <div class="notifications" id="notifications"></div>
+    </div>
+
+    <!-- Ship Forge Modal -->
+    <div id="forge-modal" class="forge-modal" style="display:none;position:fixed;left:0;top:0;width:100%;height:100%;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7)">
+        <div style="background:#071018;color:#fff;padding:18px;border-radius:8px;max-width:720px;width:92%;margin:40px auto;">
+            <h3 style="margin-top:0">SHIP FORGE</h3>
+            <p>Use blueprint fragments to unlock ship parts and permanent upgrades.</p>
+            <div id="forge-content" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px;">
+                <!-- Blueprints populated here -->
+            </div>
+            <div style="text-align:right;margin-top:12px;">
+                <button id="forge-close" class="cp-btn">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/galaxy-resource-manager.js"></script>
+    <script src="js/base-building-system.js"></script>
+    <script src="js/base-builder-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hangar — Galaxy Conquest</title>
+    <link rel="stylesheet" href="css/menu-style.css">
+    <link rel="stylesheet" href="css/cyberpunk-theme.css">
+</head>
+<body class="theme-dark-neon view-collection">
+    <div class="page-shell">
+        <header class="page-header">
+            <a class="menu-back" href="menu.html">← Back</a>
+            <h1>Hangar</h1>
+        </header>
+
+        <main class="page-main">
+            <section class="collection-screen">
+                <h2 class="screen-title">HANGAR</h2>
+                <div class="collection-header">
+                    <div class="holo-hangar" id="holoHangar"></div>
+                    <div class="completion-stats">
+                        <div class="completion-item">
+                            <span class="completion-label">Enemies</span>
+                            <span class="completion-value" id="enemyCompletion">0%</span>
+                        </div>
+                        <div class="completion-item">
+                            <span class="completion-label">Upgrades</span>
+                            <span class="completion-value" id="upgradeCompletion">0%</span>
+                        </div>
+                        <div class="completion-item">
+                            <span class="completion-label">Achievements</span>
+                            <span class="completion-value" id="achievementCompletion">0%</span>
+                        </div>
+                        <div class="completion-item">
+                            <span class="completion-label">Overall</span>
+                            <span class="completion-value" id="overallCompletion">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collection-tabs">
+                    <button class="tab-btn active" data-tab="enemies">Enemies</button>
+                    <button class="tab-btn" data-tab="upgrades">Upgrades</button>
+                    <button class="tab-btn" data-tab="achievements">Achievements</button>
+                    <button class="tab-btn" data-tab="statistics">Statistics</button>
+                </div>
+
+                <div class="collection-content">
+                    <div class="collection-tab active" id="enemiesTab">
+                        <div class="collection-categories">
+                            <button class="category-btn active" data-category="regular">Regular</button>
+                            <button class="category-btn" data-category="miniboss">Mini-Bosses</button>
+                            <button class="category-btn" data-category="megaboss">Mega-Bosses</button>
+                        </div>
+                        <div class="collection-grid" id="enemyGrid"></div>
+                    </div>
+
+                    <div class="collection-tab" id="upgradesTab">
+                        <div class="collection-grid" id="upgradeGrid"></div>
+                    </div>
+
+                    <div class="collection-tab" id="achievementTab">
+                        <div class="collection-grid" id="achievementGrid"></div>
+                    </div>
+
+                    <div class="collection-tab" id="statisticsTab">
+                        <div class="statistics-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">💀</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Total Kills</div>
+                                    <div class="stat-value" id="statTotalKills">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px;text-align:center;">
+                    <a class="menu-btn" href="menu.html">Back to Command Center</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/asset-fallbacks.js"></script>
+    <script src="js/save-system.js"></script>
+    <script src="js/character-system.js"></script>
+    <script src="js/collection-system.js"></script>
+    <script src="js/menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try { new MenuSystem(); } catch (e) { console.warn('Standalone collection init failed', e); }
+        });
+    </script>
+</body>
+</html>
